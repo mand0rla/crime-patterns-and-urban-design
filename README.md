@@ -1,204 +1,91 @@
-# Louisville Crime Data Analysis: CPTED Corridor Assessment
+# Crime Patterns and Urban Design: Louisville Analysis
 
-**Author:** Megan Scott, Data Analysis Student  
-**Project Date:** 2024  
-**Location:** Louisville, Kentucky
-
----
+An exploratory data analysis of Louisville Metro crime data, examining patterns that may influence business investment decisions, public perception of safety, and urban walkability.
 
 ## Project Overview
 
-This project analyzes 2024 crime data for Louisville, KY to identify high-crime corridors between popular neighborhoods and advocate for safety improvements using **Crime Prevention through Environmental Design (CPTED)** principles.
+This project investigates how crime patterns relate to urban planning, business locations, and pedestrian activity in Louisville, KY. The ultimate goal is to build an evidence base demonstrating the relationship between urban investment (green spaces, walkable infrastructure, livable city design) and community safety outcomes. Drawing corrolaries between data points could help make the case for local business investment in urban revitalization.
 
-### Purpose
+Crime data serves as the starting point, with plans to incorporate additional datasets on walkability, green space access, and economic indicators.
 
-Compel local business owners and everyday citizens to invest in corridor improvements between thriving neighborhoods—including NuLu, Butchertown, Whiskey Row, and the Riverfront—by presenting data-driven evidence of safety concerns that impact foot traffic and commerce.
+## Data Source
 
-### Target Audience
+**Louisville Metro KY - Crime Data 2024**  
+Louisville Open Data Portal  
+https://data.louisvilleky.gov/datasets/a220289a40c945298d7f9d5c8dc7b3c0_0/explore
 
-- **Business owners** concerned about customer safety and foot traffic
-- **City planners** evaluating infrastructure improvements
-- **Community advocates** promoting neighborhood connectivity
-- **Local government** considering CPTED interventions
-
----
-
-## Crime Classification System
-
-This analysis groups Louisville crime incidents into three strategic categories designed to capture offenses that affect public perception of safety and business decisions:
-
-### Property Crime
-- Auto Theft
-- Theft from Vehicle
-- Theft from Building
-- Burglary
-- Larceny
-- Other Theft
-
-### Interpersonal (Public-Facing)
-- Simple Assault
-- Aggravated Assault
-- Robbery
-- Intimidation
-
-### Quality of Life / Public Disorder
-- Vandalism
-- Shoplifting
-- Trespassing
-- Disorderly Conduct
-
----
+The dataset contains approximately 70,000 reported crime incidents with fields including offense classification, location (ZIP code, block address, LMPD beat/division), date/time occurred, and location category.
 
 ## Key Findings
 
-### High-Crime ZIP Codes
-Analysis of the top 25 ZIP codes by total crime volume reveals:
+### Crime Category Distribution
 
-- **40202** (downtown business district): 5th overall for total crime but **highest for Property Crime**, indicating potential vulnerability for businesses and tourists
-- Crime composition varies significantly across ZIP codes, suggesting different intervention strategies may be needed
+Crimes were grouped into three categories relevant to business decisions and public safety perception:
 
-### Spatial Patterns
-- High null values in `block_address` correlate with crimes occurring in **alleys, sidewalks, and parking lots**—critical transitional spaces between neighborhoods
-- These "in-between" areas represent prime opportunities for CPTED improvements (lighting, visibility, maintenance)
+| Category | Incident Count |
+|----------|----------------|
+| Property Crime | 18,919 |
+| Interpersonal (Public-Facing) | 12,186 |
+| Quality of Life / Public Disorder | 8,721 |
 
-### Temporal Considerations
-The `date_occurred` field includes granular timestamp data, enabling future analysis of:
-- Crime spikes during specific hours (e.g., after-dark incidents)
-- Seasonal patterns that affect perceived safety
-- Peak tourism times vs. crime rates
+### Geographic Patterns
 
----
+Analysis of the top 5 ZIP codes by crime volume reveals distinct patterns:
+
+- **40202 (Downtown)**: Highest proportion of property crime (54%), likely reflecting commercial density
+- **40211**: Highest rate of interpersonal crime among top ZIPs (36%)
+- **40219**: Highest rate of quality-of-life offenses (28%), notably above other areas
+
+### Visualizations
+
+- Stacked bar chart comparing crime type proportions across high-volume ZIP codes
+- Heatmap showing crime intensity by type across the top 25 ZIP codes
+- Line chart displaying prevalence of crime set against 24-hour clock (2024)
 
 ## Methodology
 
-### Data Source
-2024 crime incident data from Louisville Metro Police Department
-
-### Data Cleaning
-**Dropped columns:**
-- `date_reported` – redundant with occurrence date
-- `badge_id` – not relevant to geographic/categorical analysis  
-- `ObjectId` – system-generated identifier with no analytical value
-
-**Retained for analysis:**
-- `zip_code` – primary geographic unit
-- `block_address` – spatial context (despite nulls)
-- `date_occurred` – temporal patterns
-- Crime classification fields
-
-### Analysis Approach
-1. **Crime Bucketing:** Categorized offenses into three strategic groups based on public impact
-2. **Geographic Aggregation:** Grouped incidents by ZIP code to identify hotspots
-3. **Volume Sorting:** Ranked ZIPs by total crime descending to prioritize high-impact areas
-4. **Visual Analysis:** Heat maps and stacked bar charts to reveal patterns in crime composition
-
----
-
-## Visualizations
-
-### 1. Crime Intensity Heat Map
-Displays all three crime categories across the top 25 ZIP codes, sorted by total crime volume (descending). Uses color intensity to highlight concentration patterns.
-
-**Key Insight:** Property Crime dominates in 40202 despite moderate overall ranking
-
-### 2. Crime Composition Bar Chart
-Stacked percentage bars show relative proportions of each crime type within the top 5 ZIP codes.
-
-**Key Insight:** Crime profiles vary—40202 is 54% Property Crime vs. 40219's more balanced distribution
-
----
-
-## Installation & Setup
-
-### Requirements
-- Python 3.8+
-- Jupyter Notebook
-- Libraries:
-  ```
-  pandas
-  matplotlib
-  seaborn
-  numpy
-  ```
-
-### Running the Analysis
-1. Clone this repository
-2. Install dependencies:
-   ```bash
-   pip install pandas matplotlib seaborn numpy
-   ```
-3. Place the crime data CSV in the project root directory
-4. Open `crime_analysis.ipynb` in Jupyter Notebook
-5. Run all cells sequentially
-
----
+1. **Data Cleaning**: Reviewed duplicate incident numbers (none) and records that include missing block addresses (~1,100 rows)
+2. **Feature Engineering**: Extracted temporal features (month, day of week, hour) from occurrence timestamps for future temporal analysis
+3. **Crime Bucketing**: Grouped 50+ offense classifications into three categories based on relevance to business/public safety concerns:
+   - *Quality of Life / Public Disorder*: Vandalism, shoplifting, trespassing, disorderly conduct
+   - *Property Crime*: Auto theft, theft from vehicle, burglary, larceny
+   - *Interpersonal (Public-Facing)*: Simple/aggravated assault, robbery, intimidation
 
 ## Project Structure
 
 ```
-louisville-crime-analysis/
-│
-├── README.md                 # This file (place in root directory)
-├── crime_analysis.ipynb      # Main analysis notebook
+crime-patterns-and-urban-design/
 ├── data/
-│   └── louisville_crime_2024.csv
-├── visualizations/
-│   ├── heatmap_crime_intensity.png
-│   └── bar_crime_composition.png
-└── requirements.txt          # Python dependencies
+│   └── lmpd_crime.csv
+├── notebooks/
+│   └── W1_lmpd_crime.ipynb
+├── requirements.txt
+└── README.md
 ```
 
-**📍 README Placement:** Save this file as `README.md` in the **root directory** of your project folder (same level as your notebook file). This is GitHub standard practice—the README will automatically display when someone visits your repository.
+## Requirements
 
----
+- Python 3.13+
+- pandas
+- matplotlib
+- seaborn
+- numpy
 
-## Next Steps
+Install dependencies:
+```bash
+pip install -r requirements.txt
+```
 
-### Phase 2: Spatial Mapping
-- Overlay high-crime ZIPs onto Louisville street map
-- Identify specific corridor segments between NuLu, Butchertown, Whiskey Row, and Riverfront
-- Map null `block_address` incidents to locate problematic alley/sidewalk zones
+## Future Directions
 
-### Phase 3: Environmental Correlation
-Acquire and integrate:
-- **Streetlight coverage data** (Louisville Metro)
-- **Vacant/blighted property records** (Open Data Portal)
-- **Pedestrian traffic counts** (Downtown Partnership)
-- **Business licensing density** (Metro Government)
+- Integration of walkability scores and green space data
+- Correlation analysis between urban design factors and crime patterns
+- Business district-specific deep dives
 
-### Phase 4: CPTED Recommendation Package
-- Before/after street view documentation
-- Evidence-based lighting/maintenance proposals
-- Cost-benefit analysis for corridor improvements
-- Stakeholder presentation materials
+## Author
 
----
-
-## Limitations
-
-- Analysis limited to reported crimes (unreported incidents not captured)
-- 2024 data only—no multi-year trend comparison yet
-- ZIP code aggregation masks block-level nuance
-- Missing `block_address` data reduces precision for corridor identification
-
----
+Megan Scott
 
 ## License
 
-This project is for educational purposes. Crime data sourced from Louisville Metro Police Department public records.
-
----
-
-## Contact
-
-**Megan Scott**  
-Data Analysis Student  
-[Add your preferred contact method or LinkedIn URL]
-
----
-
-## Acknowledgments
-
-- Louisville Metro Police Department for public crime data
-- Data analysis coursework and mentors
-- Louisville community advocates inspiring this work
+This project uses publicly available data from Louisville Metro Government's Open Data Portal.
